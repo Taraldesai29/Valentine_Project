@@ -1663,19 +1663,33 @@
   }
 
   // Counter
-  const startDate = new Date("2025-08-01");
-  const counterEl = document.getElementById("counter");
+  // Set start date manually (IST safe)
+const startDate = new Date(2025, 7, 1, 0, 0, 0); 
+// (Year, Month-1, Day, Hour, Minute, Second)
+// August = 7 (because months start from 0)
 
-  setInterval(() => {
+const counterEl = document.getElementById("counter");
+
+function updateCounter() {
     const now = new Date();
-    const diff = now - startDate;
+
+    const diff = now.getTime() - startDate.getTime();
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
 
-    counterEl.textContent = `${days} days, ${hours} hours, ${minutes} minutes`;
-  }, 1000);
+    counterEl.textContent =
+        `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+}
+
+// Run immediately once
+updateCounter();
+
+// Then update every second
+setInterval(updateCounter, 1000);
+
 
   function showLetter() {
     document.getElementById("letter").style.display = "block";
